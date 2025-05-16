@@ -1,10 +1,12 @@
 package main;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
 import entity.MainCharacter;
@@ -20,22 +22,21 @@ public class GamePanel extends JPanel implements Runnable {
     public TileMangement tileManager = new TileMangement(this);
     public MainCharacter mainCharacter = new MainCharacter(this);
     public CollisionChecker collisionChecker = new CollisionChecker(this);
-    
+
     public final int FPS = 60;
-    
+
     public final int originalTileSize = 16;
     public final int tileSize = originalTileSize * 3;
     public final int maxScreenCol = 20;
     public final int maxScreenRow = 16;
-    public final int screenWidth = tileSize*maxScreenCol;
-    public final int screenHeight = tileSize*maxScreenRow;
-    public final int maxWorldCol = 20;  //map
-    public final int maxWorldRow = 16;  //map
+    public final int screenWidth = tileSize * maxScreenCol;
+    public final int screenHeight = tileSize * maxScreenRow;
+    public final int maxWorldCol = 20; // map
+    public final int maxWorldRow = 25; // map
     public Monster monster = new Monster(this, 5 * tileSize, 10 * tileSize);
 
     public GamePanel() {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
-        this.setBackground(Color.BLACK);
         this.setDoubleBuffered(true);
         this.addKeyListener(keyHandler);
         this.setFocusable(true);
@@ -74,6 +75,15 @@ public class GamePanel extends JPanel implements Runnable {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
+        Image backgroundImg;
+        try {
+            backgroundImg = ImageIO.read(getClass().getResourceAsStream("/res/background.png"));
+        } catch (IOException | IllegalArgumentException e) {
+            backgroundImg = null;
+            // System.out.println("Error loading tile image: " + e.getMessage());
+        }
+
+        g2.drawImage(backgroundImg, 0, 0, screenWidth, screenHeight, null);
         tileManager.draw(g2);
         mainCharacter.draw(g2);
         monster.draw(g2);

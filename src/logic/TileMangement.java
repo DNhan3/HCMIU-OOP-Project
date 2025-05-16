@@ -17,7 +17,7 @@ public class TileMangement {
     public TileMangement(GamePanel gp) {
         this.gp = gp;
         mapTileNum = new int[gp.maxWorldCol][gp.maxWorldRow];
-        loadMap("maps/map1.txt");
+        loadMap("/res/maps/map1.txt");
         loadTile();
     }
 
@@ -29,7 +29,8 @@ public class TileMangement {
 
     private void loadMap(String filename) {
         try {
-            InputStream is = getClass().getResourceAsStream("/" + filename);
+            InputStream is = getClass().getResourceAsStream(filename);
+            
             if (is == null) {
                 throw new IllegalArgumentException("Map file not found: " + filename);
             }
