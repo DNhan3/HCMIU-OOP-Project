@@ -1,11 +1,9 @@
 package entity;
 
-import java.awt.Color;
 import java.awt.Graphics2D;
 
 import logic.KeyHandler;
 import main.GamePanel;
-import main.Main;
 
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
@@ -19,7 +17,13 @@ public class MainCharacter extends Entity {
     private BufferedImage leftIdle1, leftIdle2, leftIdle3, leftIdle4, rightIdle1, rightIdle2, rightIdle3, rightIdle4;
     private BufferedImage leftJump1, leftJump2, leftJump3, leftJump4, leftJump5, leftJump6, rightJump1, rightJump2, rightJump3, rightJump4, rightJump5, rightJump6;
     private BufferedImage leftRun1, leftRun2, leftRun3, rightRun1, rightRun2, rightRun3;
-
+    
+    private MainCharacter(GamePanel gp) {
+        super(gp);
+        setDefaultValue();
+        getImage();
+    }
+    
     void setDefaultValue() {
         screenX = gp.screenWidth / 2;
         screenY = gp.screenHeight / 2;
@@ -75,11 +79,6 @@ public class MainCharacter extends Entity {
         return instance;
     }
 
-    private MainCharacter(GamePanel gp) {
-        super(gp);
-        setDefaultValue();
-        getImage();
-    }
 
     private void handleMovementInput(KeyHandler keyH) {
         if (isAlive) {
@@ -171,7 +170,6 @@ public class MainCharacter extends Entity {
             oldAction = "jump";
         }
         BufferedImage imgToDraw = null;
-        int calClock;
         int phase;
         if (clock % 60 < 1) {
             phase = 0;
