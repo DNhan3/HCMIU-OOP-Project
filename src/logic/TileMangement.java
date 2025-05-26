@@ -7,24 +7,38 @@ import java.io.InputStream;
 
 import entity.Tile;
 import main.GamePanel;
+import factory.TileFactory;
+import factory.BasicTileFactory;
 
 public class TileMangement {
     private GamePanel gp;
+    private TileFactory tileFactory;
 
-    protected Tile[] tile;
-    protected int[][] mapTileNum;
+    private Tile[] tile;
+    private int[][] mapTileNum;
 
     public TileMangement(GamePanel gp) {
         this.gp = gp;
+        this.tileFactory = new BasicTileFactory();
         mapTileNum = new int[gp.maxWorldCol][gp.maxWorldRow];
         loadMap("/res/maps/map1.txt");
         loadTile();
     }
 
+    public Tile[] getTile() {
+        return tile;
+    }
+
+    public int[][] getMapTileNum() {
+        return mapTileNum;
+    }
+
     private void loadTile() {
-        tile = new Tile[2];
-        tile[0] = new Tile(gp,0);
-        tile[1] = new Tile(gp,1);
+        int tileCount = 2;
+        tile = new Tile[tileCount];
+        for (int i = 0; i < tileCount; i++) {
+            tile[i] = tileFactory.createTile(i, gp);
+        }
     }
 
     private void loadMap(String filename) {

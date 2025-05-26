@@ -7,7 +7,7 @@ public class Main {
         JFrame window = new JFrame();
         window.setTitle("HCMIU Mario");
 
-        GamePanel panel = new GamePanel();
+        GamePanel panel = GamePanel.getInstance();
         window.add(panel);
         window.pack();
 

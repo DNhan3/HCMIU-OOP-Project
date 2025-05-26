@@ -10,16 +10,18 @@ import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
 import entity.MainCharacter;
-import entity.Monster;
+import entity.Monster.Monster;
+import entity.Monster.TheDog;
 import entity.Trap;
 import logic.CollisionChecker;
 import logic.KeyHandler;
 import logic.TileMangement;
 
 public class GamePanel extends JPanel implements Runnable {
+    private static GamePanel instance = null;
     private Thread gameThread;
 
-    KeyHandler keyHandler = new KeyHandler();
+    private KeyHandler keyHandler = new KeyHandler();
     public TileMangement tileManager = new TileMangement(this);
     public MainCharacter mainCharacter = MainCharacter.getInstance(this);
     public CollisionChecker collisionChecker = new CollisionChecker(this);
@@ -34,7 +36,7 @@ public class GamePanel extends JPanel implements Runnable {
     public final int screenHeight = tileSize * maxScreenRow;
     public final int maxWorldCol = 20; // map
     public final int maxWorldRow = 25; // map
-    public Monster monster = new Monster(this, 12 * tileSize, 9 * tileSize);
+    public TheDog monster = new TheDog(this, 12 * tileSize, 9 * tileSize);
     public Trap trap = new Trap(this, 10 * tileSize, 12 * tileSize);
 
     public GamePanel() {
@@ -42,6 +44,13 @@ public class GamePanel extends JPanel implements Runnable {
         this.setDoubleBuffered(true);
         this.addKeyListener(keyHandler);
         this.setFocusable(true);
+    }
+
+    public static GamePanel getInstance() {
+        if (instance == null) {
+            instance = new GamePanel();
+        }
+        return instance;
     }
 
     public void start() {
@@ -72,7 +81,7 @@ public class GamePanel extends JPanel implements Runnable {
     public void update() {
         mainCharacter.update(keyHandler);
         monster.update();
-        trap.checkCollision();
+        // trap.checkCollision();
     }
 
     public void paintComponent(Graphics g) {
@@ -90,7 +99,7 @@ public class GamePanel extends JPanel implements Runnable {
         tileManager.draw(g2);
         mainCharacter.draw(g2);
         monster.draw(g2);
-        trap.draw(g2);
+        //trap.draw(g2);
         g2.dispose();
     }
 

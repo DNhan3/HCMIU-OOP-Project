@@ -50,6 +50,18 @@ public class Entity {
         return speedY;
     }
 
+    public void setSpeedX(int speedX) {
+        this.speedX = speedX;
+    }
+
+    public void setSpeedY(int speedY) {
+        this.speedY = speedY;
+    }
+
+    public void setAlive(boolean alive) {
+        isAlive = alive;
+    }
+
     public Rectangle getCollisionBox() {
         return collisionBox;
     }

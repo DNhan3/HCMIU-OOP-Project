@@ -24,7 +24,7 @@ public class MainCharacter extends Entity {
         getImage();
     }
     
-    void setDefaultValue() {
+    private void setDefaultValue() {
         screenX = gp.screenWidth / 2;
         screenY = gp.screenHeight / 2;
         worldX = gp.tileSize * 5 + collisionGap;
@@ -82,14 +82,14 @@ public class MainCharacter extends Entity {
 
     private void handleMovementInput(KeyHandler keyH) {
         if (isAlive) {
-            if (keyH.upPressed && collisionOn[2] == true && delay > 5) {
+            if (keyH.isUpPressed() && collisionOn[2] == true && delay > 5) {
                 speedY = -20;
                 delay = 0;
             }
 
-            if (keyH.leftPressed) {
+            if (keyH.isLeftPressed()) {
                 speedX = -5;
-            } else if (keyH.rightPressed) {
+            } else if (keyH.isRightPressed()) {
                 speedX = 5;
             }
 
@@ -98,7 +98,7 @@ public class MainCharacter extends Entity {
                 worldY = (collisionTile[1] + 1) * gp.tileSize + 1;
             }
 
-            if (!keyH.leftPressed && !keyH.rightPressed) {
+            if (!keyH.isLeftPressed() && !keyH.isRightPressed()) {
                 speedX = 0;
             } else {
                 if (collisionOn[4] == true) {

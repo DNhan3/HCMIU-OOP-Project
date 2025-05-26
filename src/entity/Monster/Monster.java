@@ -1,4 +1,4 @@
-package entity;
+package entity.Monster;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
@@ -6,6 +6,7 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import entity.Entity;
 import main.GamePanel;
 
 public class Monster extends Entity {
@@ -23,40 +24,11 @@ public class Monster extends Entity {
         initialX = worldX;
         this.collisionBox.width = 48; // Set the width of the collision box
         this.collisionBox.height = 48; // Set the height of the collision box
-        getImage();
     }
 
     public void setDefaultValue() {
         speedX = 0;
     }
-
-    private BufferedImage setup(String string) throws IOException {
-        return ImageIO.read(getClass().getResourceAsStream(string + ".png"));
-    }
-
-    public void getImage() {
-        try {
-            leftImages[0] = setup("/res/monster/left/1");
-            leftImages[1] = setup("/res/monster/left/2");
-            leftImages[2] = setup("/res/monster/left/3");
-            leftImages[3] = setup("/res/monster/left/4");
-            leftImages[4] = setup("/res/monster/left/5");
-            leftImages[5] = setup("/res/monster/left/6");
-            leftImages[6] = setup("/res/monster/left/7");
-
-            rightImages[0] = setup("/res/monster/right/1");
-            rightImages[1] = setup("/res/monster/right/2");
-            rightImages[2] = setup("/res/monster/right/3");
-            rightImages[3] = setup("/res/monster/right/4");
-            rightImages[4] = setup("/res/monster/right/5");
-            rightImages[5] = setup("/res/monster/right/6");
-            rightImages[6] = setup("/res/monster/right/7");
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
 
     public void setInitialX(int initialX) {
         this.initialX = initialX;
@@ -68,8 +40,8 @@ public class Monster extends Entity {
 
     public void draw(Graphics2D monster) {
         if (isAlive) {
-            screenX = worldX - gp.mainCharacter.worldX + gp.mainCharacter.screenX;
-            screenY = worldY - gp.mainCharacter.worldY + gp.mainCharacter.screenY;
+            screenX = worldX - gp.mainCharacter.getWorldX() + gp.mainCharacter.getScreenX();
+            screenY = worldY - gp.mainCharacter.getWorldY() + gp.mainCharacter.getScreenY();
             // Animation logic
             int frameCount = leftImages.length;
             int frameIndex = (int)((System.currentTimeMillis() / 100) % frameCount);
@@ -102,15 +74,15 @@ public class Monster extends Entity {
     public void checkCollision() {
         collisionBox.setLocation(worldX, worldY);
 
-        if (isAlive && gp.mainCharacter.collisionBox.intersects(this.collisionBox)) {
-            int mainBottom = gp.mainCharacter.worldY + gp.tileSize;
+        if (isAlive && gp.mainCharacter.getCollisionBox().intersects(this.collisionBox)) {
+            int mainBottom = gp.mainCharacter.getWorldY() + gp.tileSize;
             int monsterTop = this.worldY;
 
-            if (mainBottom >= monsterTop && gp.mainCharacter.speedY > 0) {
+            if (mainBottom >= monsterTop && gp.mainCharacter.getSpeedY() > 0) {
                 isAlive = false;
-                gp.mainCharacter.speedY = -10; // Bounce up after kill
+                gp.mainCharacter.setSpeedY(gp.mainCharacter.getSpeedY() - 10); // Bounce up after kill
             } else {
-                gp.mainCharacter.isAlive = false;
+                gp.mainCharacter.setAlive(false);
             }
         }
     }

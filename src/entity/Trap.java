@@ -6,10 +6,9 @@ import main.GamePanel;
 
 public class Trap extends Entity { 
     private final GamePanel gp;
-    public int worldX, worldY;
-    public int screenX, screenY;
-    public int width, height;
-    public boolean isSolid = true;
+    private int worldX, worldY;
+    private int screenX, screenY;
+    private int width, height;
 
     public Trap(GamePanel gp, int worldX, int worldY) {
         super(gp);
