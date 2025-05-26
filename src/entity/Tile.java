@@ -21,6 +21,9 @@ public class Tile{
         }
 
         try {
+            if (tileNum < 0 || tileNum > 1) {
+                throw new IllegalArgumentException("Invalid tile number: " + tileNum);
+            }
             tileImage = ImageIO.read(getClass().getResourceAsStream("/res/tiles/tile" + tileNum + ".png"));
         } catch (IOException | IllegalArgumentException e) {
             tileImage = null;

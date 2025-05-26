@@ -9,25 +9,26 @@ import javax.imageio.ImageIO;
 import main.GamePanel;
 
 public class Monster extends Entity {
+    private int cntRes = 0;
     private int movingLength;
     private int initialX;
     private BufferedImage[] leftImages = new BufferedImage[7];
     private BufferedImage[] rightImages = new BufferedImage[7];
     
-    public Monster(GamePanel gp, int worldX, int worldY) {
+    public Monster(GamePanel gp, int worldX, int worldY, int movingLength) {
         super(gp);
-        this.worldX = worldX;
-        this.worldY = worldY;
+        this.movingLength = movingLength * gp.tileSize; // Convert to world units
+        this.worldX = worldX * gp.tileSize; // Convert to world units
+        this.worldY = worldY * gp.tileSize; // Convert to world units
         setDefaultValue();
-        movingLength = 2 * gp.tileSize;
-        initialX = worldX;
-        this.collisionBox.width = 48; // Set the width of the collision box
-        this.collisionBox.height = 48; // Set the height of the collision box
         getImage();
     }
 
     public void setDefaultValue() {
         speedX = 0;
+        initialX = worldX;
+        this.collisionBox.width = 48; // Set the width of the collision box
+        this.collisionBox.height = 48; // Set the height of the collision box
     }
 
     private BufferedImage setup(String string) throws IOException {
@@ -87,15 +88,23 @@ public class Monster extends Entity {
     public void update() {
         if (isAlive) {
             if (worldX >= initialX + movingLength) {
-                speedX = -1; // Move left
+                speedX = -2; // Move left
                 direction = "left";
             } else if (worldX <= initialX) {
-                speedX = 1; // Move right
+                speedX = 2; // Move right
                 direction = "right";
             }
             worldX += speedX;
 
             checkCollision();
+        }else{
+            // respawn logic
+            if(cntRes < 500) {
+                cntRes++;
+            } else {
+                cntRes = 0;
+                isAlive = true;
+            }
         }
     }
 

@@ -41,7 +41,6 @@ public class TileMangement {
 
             while (row < gp.maxWorldRow) {
                 String line = br.readLine();
-
                 while (col < gp.maxWorldCol) {
                     String numbers[] = line.split(" ");
                     int num = Integer.parseInt(numbers[col]);
@@ -59,7 +58,7 @@ public class TileMangement {
 
     public void draw(Graphics2D g2d) {
         for (int j = 0; j < gp.maxWorldRow; j++) {
-            for (int i = 0; i < gp.maxScreenCol; i++) {
+            for (int i = 0; i < gp.maxWorldCol; i++) {
                 int worldX = i * gp.tileSize;  //tileCordinate
                 int worldY = j * gp.tileSize;  //tileCordinate
                 int screenX = worldX - gp.mainCharacter.getWorldX() + gp.screenWidth/2;

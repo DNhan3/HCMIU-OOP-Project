@@ -32,10 +32,12 @@ public class GamePanel extends JPanel implements Runnable {
     public final int maxScreenRow = 16;
     public final int screenWidth = tileSize * maxScreenCol;
     public final int screenHeight = tileSize * maxScreenRow;
-    public final int maxWorldCol = 20; // map
+    public final int maxWorldCol = 50; // map
     public final int maxWorldRow = 25; // map
-    public Monster monster = new Monster(this, 12 * tileSize, 9 * tileSize);
-    public Trap trap = new Trap(this, 10 * tileSize, 12 * tileSize);
+    public Monster monster1 = new Monster(this, 8, 19, 6);
+    public Monster monster2 = new Monster(this, 15, 22, 7);
+    public Monster monster3 = new Monster(this, 27, 16, 7);
+    public Trap trap = new Trap(this, 16 * tileSize, 11 * tileSize);
 
     public GamePanel() {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
@@ -71,7 +73,9 @@ public class GamePanel extends JPanel implements Runnable {
 
     public void update() {
         mainCharacter.update(keyHandler);
-        monster.update();
+        monster1.update();
+        monster2.update();
+        monster3.update();
         trap.checkCollision();
     }
 
@@ -89,7 +93,9 @@ public class GamePanel extends JPanel implements Runnable {
         g2.drawImage(backgroundImg, 0, 0, screenWidth, screenHeight, null);
         tileManager.draw(g2);
         mainCharacter.draw(g2);
-        monster.draw(g2);
+        monster1.draw(g2);
+        monster2.draw(g2);
+        monster3.draw(g2);
         trap.draw(g2);
         g2.dispose();
     }

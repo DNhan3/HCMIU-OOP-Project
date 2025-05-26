@@ -27,8 +27,8 @@ public class MainCharacter extends Entity {
     void setDefaultValue() {
         screenX = gp.screenWidth / 2;
         screenY = gp.screenHeight / 2;
-        worldX = gp.tileSize * 5 + collisionGap;
-        worldY = 48 * 11 + 40;
+        worldX = gp.tileSize * 1; // Initial position in the world
+        worldY = 0;
         speedX = 0;
         speedY = 0;
     }
@@ -216,6 +216,11 @@ public class MainCharacter extends Entity {
 
     public void update(KeyHandler keyH) {
         clock++;
+        if( !isAlive) {
+            this.worldX = gp.tileSize * 1; // Reset position if dead
+            this.worldY = 0;
+            isAlive = true; // Reset alive status
+        }
         collisionBox.x = worldX + collisionGap;
         collisionBox.y = worldY + gp.tileSize - collisionBox.height - 1;
         gp.collisionChecker.checkTile(this);
