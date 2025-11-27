@@ -1,7 +1,5 @@
 package entity;
-
 import java.awt.Graphics2D;
-
 import main.GamePanel;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -11,29 +9,30 @@ public class Tile{
     private GamePanel gp;
     private int tileNum;
     private BufferedImage tileImage;
-    private boolean isSolid = false;
+    private boolean collision = false;
 
     public Tile(GamePanel gp, int tileNum) {
         this.gp = gp;
         this.tileNum = tileNum;
         if (tileNum == 1) {
-            isSolid = true;
+            collision = true;
         }
+        this.tileImage = tileImage(tileNum);
+    }
 
+    private BufferedImage tileImage(int tileNum) {
         try {
-            if (tileNum < 0 || tileNum > 1) {
-                throw new IllegalArgumentException("Invalid tile number: " + tileNum);
-            }
-            tileImage = ImageIO.read(getClass().getResourceAsStream("/res/tiles/tile" + tileNum + ".png"));
+            BufferedImage img = ImageIO.read(getClass().getResourceAsStream("/res/tiles/tile" + tileNum + ".png"));
+            if (img == null) return null;
+            return img;
         } catch (IOException | IllegalArgumentException e) {
-            tileImage = null;
             System.out.println("Error loading tile image: " + e.getMessage());
+            return null;
         }
     }
 
     public void draw(Graphics2D g2d, int x, int y) {
         g2d.drawImage(tileImage, x, y, gp.tileSize, gp.tileSize, null);
-
     }
 
     public GamePanel getGp() {
@@ -60,12 +59,16 @@ public class Tile{
         this.tileImage = tileImage;
     }
 
-    public boolean isSolid() {
-        return isSolid;
+    public boolean isCollision() {
+        return collision;
     }
 
-    public void setSolid(boolean isSolid) {
-        this.isSolid = isSolid;
+    public void setCollision(boolean isCollidable) {
+        this.collision = isCollidable;
+    }
+
+    public void getTileImage(BufferedImage tileImage) {
+        this.tileImage = tileImage;
     }
 
 }

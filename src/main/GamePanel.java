@@ -3,41 +3,35 @@ package main;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Image;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
 import javax.swing.JPanel;
-
-import entity.MainCharacter;
-import entity.Monster;
-import entity.Trap;
-import logic.CollisionChecker;
-import logic.KeyHandler;
-import logic.TileMangement;
+import java.awt.Toolkit;
+import inGameEntity.MainCharacter;
+import utils.CollisionChecker;
+import utils.KeyHandler;
+import utils.MouseTrack;
+import utils.ScreenManagement;
+import utils.TileMangement;
 
 public class GamePanel extends JPanel implements Runnable {
     private Thread gameThread;
 
-    KeyHandler keyHandler = new KeyHandler();
-    public TileMangement tileManager = new TileMangement(this);
+    public KeyHandler keyHandler = KeyHandler.getInstance();
+    public MouseTrack mouseTrack = MouseTrack.getInstance();
+    public ScreenManagement screenManagement = ScreenManagement.getInstance(this);
+    public TileMangement tileM = TileMangement.getInstance(this);
     public MainCharacter mainCharacter = MainCharacter.getInstance(this);
-    public CollisionChecker collisionChecker = new CollisionChecker(this);
+    public CollisionChecker collisionChecker = CollisionChecker.getInstance(this);
 
-    public final int FPS = 60;
+    public final int FPS = 30;
 
-    public final int originalTileSize = 16;
-    public final int tileSize = originalTileSize * 3;
+    public final int originalTileSize = 32;
+    public final int tileSize = originalTileSize*2;
     public final int maxScreenCol = 20;
     public final int maxScreenRow = 16;
     public final int screenWidth = tileSize * maxScreenCol;
     public final int screenHeight = tileSize * maxScreenRow;
     public final int maxWorldCol = 50; // map
     public final int maxWorldRow = 25; // map
-    public Monster monster1 = new Monster(this, 8, 19, 6);
-    public Monster monster2 = new Monster(this, 15, 22, 7);
-    public Monster monster3 = new Monster(this, 27, 16, 7);
-    public Trap trap = new Trap(this, 16 * tileSize, 11 * tileSize);
 
     public GamePanel() {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
@@ -73,30 +67,15 @@ public class GamePanel extends JPanel implements Runnable {
 
     public void update() {
         mainCharacter.update(keyHandler);
-        monster1.update();
-        monster2.update();
-        monster3.update();
-        trap.checkCollision();
+        screenManagement.update();
     }
 
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
-        Image backgroundImg;
-        try {
-            backgroundImg = ImageIO.read(getClass().getResourceAsStream("/res/background.png"));
-        } catch (IOException | IllegalArgumentException e) {
-            backgroundImg = null;
-            // System.out.println("Error loading tile image: " + e.getMessage());
-        }
-
-        g2.drawImage(backgroundImg, 0, 0, screenWidth, screenHeight, null);
-        tileManager.draw(g2);
+        tileM.draw(g2);
         mainCharacter.draw(g2);
-        monster1.draw(g2);
-        monster2.draw(g2);
-        monster3.draw(g2);
-        trap.draw(g2);
+        Toolkit.getDefaultToolkit().sync();
         g2.dispose();
     }
 

@@ -1,0 +1,94 @@
+package utils;
+
+import java.awt.Graphics2D;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.InputStream;
+import java.awt.image.BufferedImage;
+import entity.Tile;
+import main.GamePanel;
+
+public class TileMangement {
+    private static TileMangement instance = null;
+
+    private GamePanel gp;
+
+    protected Tile[] tile;
+    protected int[][] mapTileNum;
+    BufferedImage mapCache;
+
+    private TileMangement(GamePanel gp) {
+        this.gp = gp;
+        mapTileNum = new int[gp.maxWorldCol][gp.maxWorldRow];
+        loadMap("/res/maps/map1.txt");
+        System.out.println("Map loaded");
+        loadTile();
+        System.out.println("Tiles loaded");
+        buildMapCache();
+        System.out.println("Map cache built");
+    }
+
+    public static TileMangement getInstance(GamePanel gp) {
+        if (instance == null) {
+            instance = new TileMangement(gp);
+        }
+        return instance;
+    }
+
+    private void loadTile() {
+        tile = new Tile[2];
+        tile[0] = new Tile(gp, 0);
+        tile[1] = new Tile(gp, 1);
+    }
+
+    private void loadMap(String filename) {
+        try {
+            InputStream is = getClass().getResourceAsStream(filename);
+
+            if (is == null) {
+                throw new IllegalArgumentException("Map file not found: " + filename);
+            }
+            BufferedReader br = new BufferedReader(new InputStreamReader(is));
+
+            int col = 0;
+            int row = 0;
+
+            while (row < gp.maxWorldRow) {
+                String line = br.readLine();
+                while (col < gp.maxWorldCol) {
+                    String numbers[] = line.split(" ");
+                    int num = Integer.parseInt(numbers[col]);
+                    mapTileNum[col][row] = num;
+                    col++;
+                }
+                col = 0;
+                row++;
+            }
+            br.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void buildMapCache() {
+        mapCache = new BufferedImage(gp.maxWorldCol * gp.tileSize, gp.maxWorldRow * gp.tileSize,
+                BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g = mapCache.createGraphics();
+
+        for (int row = 0; row < gp.maxWorldRow; row++) {
+            for (int col = 0; col < gp.maxWorldCol; col++) {
+                int tileId = mapTileNum[col][row];
+                BufferedImage tileI = tile[tileId].getTileImage(); // tile image from sprite sheet
+
+                g.drawImage(tileI, col * gp.tileSize, row * gp.tileSize, gp.tileSize, gp.tileSize, null);
+            }
+        }
+
+    }
+
+    public void draw(Graphics2D g2d) {
+        g2d.drawImage(mapCache, -gp.screenManagement.getScreenX(), -gp.screenManagement.getScreenY(), null);
+    }
+
+
+}

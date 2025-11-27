@@ -3,74 +3,107 @@ package entity;
 import main.GamePanel;
 import java.awt.Rectangle;
 
-
 public class Entity {
-    protected GamePanel gp;
-    protected int worldX, worldY;      // World coordinates
-    protected int screenX, screenY;    // Screen coordinates
+    public GamePanel gp;
+    private int worldX, worldY; // World coordinates
+    private int speed = 0;
 
-    protected int speedX = 0;
-    protected int speedY = 0;
-    protected String direction = "right";
-    protected String oldAction = "idle";
-    protected boolean grounded = false;
-    protected boolean[] collisionOn = new boolean[5]; // 1 = up, 2 = down, 3 = left, 4 = right check direction of collision
-    protected int[] collisionTile = new int[5]; // 1 = up, 2 = down, 3 = left, 4 = right check tile number of collision
-    protected Rectangle collisionBox;
-    protected boolean isAlive = true;
+    private String direction = "right";
+    private int colGap;
+    private int rowGap;
+    private Rectangle collisionBox;
 
-    public Entity(GamePanel gp) {
+    private boolean isAlive = true;
+
+    public Entity(GamePanel gp, String name, int worldX, int worldY, int speed, Rectangle collisionBox, boolean[] collisionOn,
+            int[] collisionTile) {
         this.gp = gp;
+        this.worldX = worldX;
+        this.worldY = worldY;
+        this.collisionBox = collisionBox;
+        colGap = (gp.tileSize - collisionBox.width) / 2;
+        rowGap = (gp.tileSize - collisionBox.height) / 2;
+        this.speed = speed;
+        this.isAlive = true;
+        System.out.println("Entity " + name + " created at (" + worldX + ", " + worldY + ") with speed " + speed);
+    }
 
-        // Initialize collision box
-        collisionBox = new Rectangle(0, 0, 32, 32); // Default size, can be adjusted
+    public GamePanel getGp() {
+        return gp;
+    }
+
+    public void setGp(GamePanel gp) {
+        this.gp = gp;
     }
 
     public int getWorldX() {
         return worldX;
     }
 
+    public void setWorldX(int worldX) {
+        this.worldX = worldX;
+    }
+
     public int getWorldY() {
         return worldY;
     }
 
+    public void setWorldY(int worldY) {
+        this.worldY = worldY;
+    }
+
     public int getScreenX() {
-        return screenX;
+        return worldX - gp.screenManagement.getScreenX();
     }
 
     public int getScreenY() {
-        return screenY;
+        return worldY - gp.screenManagement.getScreenY();
     }
 
-    public int getSpeedX() {
-        return speedX;
+    public int getSpeed() {
+        return speed;
     }
 
-    public int getSpeedY() {
-        return speedY;
+    public void setSpeed(int speedX) {
+        this.speed = speedX;
+    }
+
+    public String getDirection() {
+        return direction;
+    }
+
+    public void setDirection(String direction) {
+        this.direction = direction;
+    }
+
+    public int getColGap() {
+        return colGap;
+    }
+
+    public void setColGap(int colGap) {
+        this.colGap = colGap;
+    }
+
+    public int getRowGap() {
+        return rowGap;
+    }
+
+    public void setRowGap(int rowGap) {
+        this.rowGap = rowGap;
+    }
+
+    public boolean isAlive() {
+        return isAlive;
+    }
+
+    public void setAlive(boolean isAlive) {
+        this.isAlive = isAlive;
     }
 
     public Rectangle getCollisionBox() {
         return collisionBox;
     }
 
-    public boolean[] getCollisionOn() {
-        return collisionOn;
-    }
 
-    public int[] getCollisionTile() {
-        return collisionTile;
-    }
 
-    public void setCollisionBox(Rectangle collisionBox) {
-        this.collisionBox = collisionBox;
-    }
-
-    public void setCollisionOn(int index, boolean collisionOn) {
-        this.collisionOn[index] = collisionOn;
-    }
-
-    public void setCollisionTile(int index, int value) {
-        this.collisionTile[index] = value;
-    }
 }
