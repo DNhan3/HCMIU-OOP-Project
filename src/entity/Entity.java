@@ -5,59 +5,50 @@ import java.awt.Rectangle;
 
 public class Entity {
     public GamePanel gp;
-    private int worldX, worldY; // World coordinates
+    public int worldX, worldY; // World coordinates
+    private int width, height;
+    private int direction = 0; // 0: up, 1: down, 2: left, 3: right
+    private String name;
+    
     private int speed = 0;
+    private int damage;
+    private int hp;
+    private int maxHp;
 
-    private String direction = "right";
+    // collision
+    private Rectangle collisionBox;
+    private boolean[] collisionOn = new boolean[4]; // 1 = up, 2 = down, 3 = left, 4 = right check direction of
+    private int[] collisionTile = new int[4]; // 1 = up, 2 = down, 3 = left, 4 = right check tile number of collision
     private int colGap;
     private int rowGap;
-    private Rectangle collisionBox;
 
     private boolean isAlive = true;
 
-    public Entity(GamePanel gp, String name, int worldX, int worldY, int speed, Rectangle collisionBox, boolean[] collisionOn,
+    public Entity(GamePanel gp, String name, int worldX, int worldY, int width, int height, Rectangle collisionBox, int speed, int damage, int hp, int maxHp,
+            boolean[] collisionOn,
             int[] collisionTile) {
         this.gp = gp;
         this.worldX = worldX;
         this.worldY = worldY;
+        this.width = width;
+        this.height = height;
         this.collisionBox = collisionBox;
-        colGap = (gp.tileSize - collisionBox.width) / 2;
-        rowGap = (gp.tileSize - collisionBox.height) / 2;
+        colGap = (width - collisionBox.width) / 2;
+        rowGap = (height - collisionBox.height) / 2;
         this.speed = speed;
+        this.damage = damage;
+        this.hp = hp;
+        this.maxHp = maxHp;
         this.isAlive = true;
-        System.out.println("Entity " + name + " created at (" + worldX + ", " + worldY + ") with speed " + speed);
-    }
-
-    public GamePanel getGp() {
-        return gp;
-    }
-
-    public void setGp(GamePanel gp) {
-        this.gp = gp;
-    }
-
-    public int getWorldX() {
-        return worldX;
-    }
-
-    public void setWorldX(int worldX) {
-        this.worldX = worldX;
-    }
-
-    public int getWorldY() {
-        return worldY;
-    }
-
-    public void setWorldY(int worldY) {
-        this.worldY = worldY;
+        this.name = name;
     }
 
     public int getScreenX() {
-        return worldX - gp.screenManagement.getScreenX();
+        return worldX - gp.screenManagement.getScreenX() - width/2;
     }
 
     public int getScreenY() {
-        return worldY - gp.screenManagement.getScreenY();
+        return worldY - gp.screenManagement.getScreenY() - height/2;
     }
 
     public int getSpeed() {
@@ -68,11 +59,11 @@ public class Entity {
         this.speed = speedX;
     }
 
-    public String getDirection() {
+    public int getDirection() {
         return direction;
     }
 
-    public void setDirection(String direction) {
+    public void setDirection(int direction) {
         this.direction = direction;
     }
 
@@ -104,6 +95,75 @@ public class Entity {
         return collisionBox;
     }
 
+    public boolean[] getCollisionOn() {
+        return collisionOn;
+    }
 
+    public void setCollisionOn(int index, boolean collisionOn) {
+        this.collisionOn[index] = collisionOn;
+    }
 
+    public int[] getCollisionTile() {
+        return collisionTile;
+    }
+
+    public void setCollisionTile(int index, int collisionTile) {
+        this.collisionTile[index] = collisionTile;
+    }
+
+    public int getDamage() {
+        return damage;
+    }
+
+    public void setDamage(int damage) {
+        this.damage = damage;
+    }
+
+    public int getHp() {
+        return hp;
+    }
+
+    public void setHp(int hp) {
+        this.hp = hp;
+    }
+
+    public void damageHp(int damage) {
+        this.hp -= damage;
+        if (this.hp < 0) {
+            this.hp = 0;
+            this.isAlive = false;
+        }
+    }
+
+    public int getMaxHp() {
+        return maxHp;
+    }
+
+    public void setMaxHp(int maxHp) {
+        this.maxHp = maxHp;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }

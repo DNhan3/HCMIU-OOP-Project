@@ -5,10 +5,13 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import javax.swing.JPanel;
 import java.awt.Toolkit;
-import inGameEntity.MainCharacter;
+
+import inGameEntity.Player;
 import utils.CollisionChecker;
 import utils.KeyHandler;
-import utils.MouseTrack;
+import utils.ProjectileManager;
+import utils.CoordinateManager;
+import utils.CrepsManager;
 import utils.ScreenManagement;
 import utils.TileMangement;
 
@@ -16,14 +19,16 @@ public class GamePanel extends JPanel implements Runnable {
     private Thread gameThread;
 
     public KeyHandler keyHandler = KeyHandler.getInstance();
-    public MouseTrack mouseTrack = MouseTrack.getInstance();
+    public CoordinateManager mouseTrack = CoordinateManager.getInstance();
     public ScreenManagement screenManagement = ScreenManagement.getInstance(this);
     public TileMangement tileM = TileMangement.getInstance(this);
-    public MainCharacter mainCharacter = MainCharacter.getInstance(this);
+    public Player mainCharacter = Player.getInstance(this);
     public CollisionChecker collisionChecker = CollisionChecker.getInstance(this);
-
+    public CrepsManager crepsManager = CrepsManager.getInstance(this);
+    public ProjectileManager projectileManager = ProjectileManager.getInstance();
+    
     public final int FPS = 30;
-
+    
     public final int originalTileSize = 32;
     public final int tileSize = originalTileSize*2;
     public final int maxScreenCol = 20;
@@ -66,8 +71,10 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void update() {
-        mainCharacter.update(keyHandler);
         screenManagement.update();
+        mainCharacter.update(keyHandler);
+        crepsManager.updateCreps();
+        projectileManager.updateProjectiles();
     }
 
     public void paintComponent(Graphics g) {
@@ -75,6 +82,8 @@ public class GamePanel extends JPanel implements Runnable {
         Graphics2D g2 = (Graphics2D) g;
         tileM.draw(g2);
         mainCharacter.draw(g2);
+        crepsManager.drawCreps(g2);
+        projectileManager.drawProjectiles(g2);
         Toolkit.getDefaultToolkit().sync();
         g2.dispose();
     }

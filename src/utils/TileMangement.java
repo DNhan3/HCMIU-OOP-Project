@@ -36,9 +36,10 @@ public class TileMangement {
     }
 
     private void loadTile() {
-        tile = new Tile[2];
+        tile = new Tile[3];
         tile[0] = new Tile(gp, 0);
         tile[1] = new Tile(gp, 1);
+        tile[2] = new Tile(gp, 2);
     }
 
     private void loadMap(String filename) {
@@ -90,5 +91,11 @@ public class TileMangement {
         g2d.drawImage(mapCache, -gp.screenManagement.getScreenX(), -gp.screenManagement.getScreenY(), null);
     }
 
+    public int getMapTileNum(int x, int y) {
+        return mapTileNum[x][y];
+    }
 
+    public Tile getTile(int index) {
+        return tile[index];
+    }
 }

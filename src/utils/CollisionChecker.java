@@ -1,6 +1,6 @@
 package utils;
 
-import inGameEntity.MainCharacter;
+import entity.Entity;
 import main.GamePanel;
 
 public class CollisionChecker {
@@ -18,32 +18,30 @@ public class CollisionChecker {
         return instance;
     }
 
-    public void checkTile(MainCharacter entity) {
+    public void checkTile(Entity entity) {
         
         // Initialize collision states: 0 = no collision
         for (int i = 0; i < 4; i++) {
             entity.setCollisionOn(i, false);
         }
-        int speedX = entity.getSpeed();
-        int speedY = entity.getSpeed();
+        int speed = entity.getSpeed();
+        int entityXStart = entity.worldX - entity.getWidth() / 2 + entity.getColGap();
+        int entityYStart = entity.worldY - entity.getHeight() / 2 + entity.getRowGap();
+        int entityXend = entityXStart + entity.getCollisionBox().width - 1;
+        int entityYend = entityYStart + entity.getCollisionBox().height - 1;
 
-        int entityX = entity.getWorldX() + entity.getColGap();
-        int entityY = entity.getWorldY() + entity.getRowGap();
-        int entityXend = entityX + entity.getCollisionBox().width;
-        int entityYend = entityY + entity.getCollisionBox().height;
-
-        int entityLeftCol = entityX / gp.tileSize;
+        int entityLeftCol = entityXStart / gp.tileSize;
         int entityRightCol = entityXend / gp.tileSize;
-        int entityTopRow = entityY / gp.tileSize;
+        int entityTopRow = entityYStart / gp.tileSize;
         int entityBottomRow = entityYend / gp.tileSize;
 
         int tileNum1;
         int tileNum2;
 
-        int nextLeftCol = (entityX - speedX) / gp.tileSize;
-        int nextRightCol = (entityXend + speedX) / gp.tileSize;
-        int nextTopRow = (entityY - speedY) / gp.tileSize;
-        int nextBottomRow = (entityYend + speedY) / gp.tileSize;
+        int nextLeftCol = (entityXStart - speed) / gp.tileSize;
+        int nextRightCol = (entityXend + speed) / gp.tileSize;
+        int nextTopRow = (entityYStart - speed) / gp.tileSize;
+        int nextBottomRow = (entityYend + speed) / gp.tileSize;
 
         // Left collision
         tileNum1 = gp.tileM.mapTileNum[nextLeftCol][entityTopRow];
@@ -57,7 +55,7 @@ public class CollisionChecker {
         tileNum2 = gp.tileM.mapTileNum[nextRightCol][entityBottomRow];
         if (gp.tileM.tile[tileNum1].isCollision() || gp.tileM.tile[tileNum2].isCollision()) {
             entity.setCollisionOn(1, true); // Right collision
-            entity.setCollisionTile(1, nextRightCol);
+            entity.setCollisionTile(1, nextRightCol - 1);
         }
         // Up collision
         tileNum1 = gp.tileM.mapTileNum[entityLeftCol][nextTopRow];
@@ -71,7 +69,7 @@ public class CollisionChecker {
         tileNum2 = gp.tileM.mapTileNum[entityRightCol][nextBottomRow];
         if (gp.tileM.tile[tileNum1].isCollision() || gp.tileM.tile[tileNum2].isCollision()) {
             entity.setCollisionOn(3, true); // Down collision
-            entity.setCollisionTile(3, nextBottomRow);
+            entity.setCollisionTile(3, nextBottomRow - 1);
         }
     }
 }

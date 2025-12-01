@@ -7,15 +7,14 @@ public class Main {
         JFrame window = new JFrame();
         window.setTitle("HCMIU Mario");
 
-        GamePanel panel = new GamePanel();
-        window.add(panel);
+        // 
+        GameMenu menu = new GameMenu();
+        window.add(menu);
         window.pack();
 
         window.setResizable(false);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setLocationRelativeTo(null);
         window.setVisible(true);
-
-        panel.start();
     }
 }
