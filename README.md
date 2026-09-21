@@ -1,18 +1,42 @@
-## Getting Started
+# Cat Adventure
 
-Welcome to the VS Code Java world. Here is a guideline to help you get started to write Java code in Visual Studio Code.
+A simple Java 2D platformer inspired by classic games like *Mario*.
 
-## Folder Structure
+You play as a **cat** and travel through a demo level while avoiding and defeating **dogs by jumping on them**.
 
-The workspace contains two folders by default, where:
+## Gameplay
 
-- `src`: the folder to maintain sources
-- `lib`: the folder to maintain dependencies
+The current version contains **one demo level**.
 
-Meanwhile, the compiled output files will be generated in the `bin` folder by default.
+The main gameplay is:
 
-> If you want to customize the folder structure, open `.vscode/settings.json` and update the related settings there.
+* Move the cat around the level
+* Jump across platforms
+* Jump on dogs to defeat them
+* Reach the end of the demo level
 
-## Dependency Management
+There is currently **no combat system**. Dogs are defeated only by jumping on them from above.
 
-The `JAVA PROJECTS` view allows you to manage your dependencies. More details can be found [here](https://github.com/microsoft/vscode-java-dependency#manage-dependencies).
+## Controls
+
+| Key       | Action     |
+| --------- | ---------- |
+| `A` / `←` | Move left  |
+| `D` / `→` | Move right |
+| `Space`   | Jump       |
+
+## Current Status
+
+**Demo**
+
+The project currently contains only a single demo level. More levels and features may be added later.
+
+## Built With
+
+* Java
+* Object-Oriented Programming
+* 2D Game Development
+
+## Running the Game
+
+Open the project in a Java IDE and run the main game class.
